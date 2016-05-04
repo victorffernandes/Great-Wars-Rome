@@ -9,14 +9,14 @@ ___________
 Great Wars Rome is a strategy game which you are a general defending Rome against the barbarians, made by students from Nave RJ.
 
 ####Team:
-**[Mateus Amaral](https://github.com/gitmateusamaral), [Victor Fernandes](https://github.com/victorffernandes), [Luís Paulo](https://github.com/lpaulobos).**
+**[Mateus Amaral](https://github.com/gitmateusamaral), [Victor Fernandes](https://github.com/victorffernandes) and [Luís Paulo](https://github.com/lpaulobos).**
 
 ###Português:
 ___________
 Great Wars Rome é um jogo de estratégia em que você assume o papel de um general defendendo Roma contra os bárbaros, feito por estudantes do Nave RJ.
 
 ####Equipe:
-**[Mateus Amaral](https://github.com/gitmateusamaral), [Victor Fernandes](https://github.com/victorffernandes), [Luís Paulo](https://github.com/lpaulobos).**
+**[Mateus Amaral](https://github.com/gitmateusamaral), [Victor Fernandes](https://github.com/victorffernandes) e [Luís Paulo](https://github.com/lpaulobos).**
 ___________
 <br>
 
