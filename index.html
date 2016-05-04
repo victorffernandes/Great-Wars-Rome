@@ -1,0 +1,348 @@
+<html>
+<head>
+<title>
+Great Wars: Rome
+</title>
+<link rel="shortcut icon" href="http://i.imgur.com/7Jropeg.png"/>
+
+<style>
+
+@font-face {
+	font-family: "Oracle";
+	src: url("Fonts/Oracle.ttf");
+}
+
+:focus{
+	css declarations;
+}
+
+#myCanvas{
+margin-top:100px;
+border: 1px solid #000000;
+}
+
+</style>
+</head>
+<meta charset="utf-8">
+<body bgcolor= "#FFFFFF">
+<center><canvas id="myCanvas" width="938" height="600">
+</center>
+</canvas>
+<script src = "essentials.js"></script>
+<script src = "pause.js"></script>
+<script src = "pauseOptions.js"></script>
+<script src = "Game_Class.js"></script>
+<script>
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	var focused = true;
+
+	window.onfocus = function() {
+    focused = true;
+	};
+		
+	window.onblur = function() {
+		focused = false;
+	};
+	
+	
+	localStorage.setItem("d.f",1);
+	localStorage.setItem("rada",2);
+	
+	var difficulty = 1;
+	
+	if(localStorage.getItem("d.f") != (undefined || null))
+	{
+		if(localStorage.getItem("d.f") > 0.3)
+		difficulty = parseFloat(localStorage.getItem("d.f"));
+	}
+	
+	var musicadespojada = new Audio("123.mp3");
+	var e_A = new Image();
+	var e_K = new Image();
+	var e_W = new Image();
+	var volume = new Image();
+	var meteoroj = new Image()
+	var meteoro = new Image()
+	var telaganhou = new Image()
+	var telaperdeu = new Image()
+	var papel = new Image();
+	var papiro = new Image();
+	meteoroj.src = "Imagens/meteoroj.png"
+	meteoro.src = "Imagens/meteoro.jpg"
+	telaganhou.src = "Imagens/voce_ganhou.jpg";
+	telaperdeu.src = "Imagens/voce_perdeu.jpg";
+	e_A.src = 'Imagens/e_A.png';
+	e_K.src = 'Imagens/e_K.png';
+	e_W.src = 'Imagens/e_W.png';
+	papel.src = "TelaPause.png";
+	papiro.src = "Audio.png";
+	musicadespojada.volume = 0.5;
+	var opacidade = 1;
+	
+	var menus = new gameMenu();
+	var battleMenus = new Game();
+	var end = new Fim();
+	var pauseOptions = new pauseOptions();
+	var pause = new pause();
+	
+	var scene = "Menu";
+	var speedK = 1;
+	var speedA = 1;
+	var speedW = 1;
+	var cash = 100;
+	var costK = 10;
+	var costA = 25;
+	var costW = 20;
+	var costK = 40;
+	var costC = 100;
+	var gainW = 15;
+	var gainA = 20;
+	var gainK = 25;
+	var random;
+	var pt = false;
+	
+	var kd = function(e)
+	{
+		switch(e.keyCode)
+		{
+			case 80:
+			if(scene == "battleMenu") scene = "pause";
+			break;
+		}
+	}	
+	
+//Menu----------------------------------	
+	function gameMenu ()
+	{
+	this.img = new Image();
+	this.img.src = "Imagens/tela-inicial.jpg"
+	this.jogar = {x:410,y:310,w:120,h:50}
+	this.tutorial = {x:356,y:356,w:200,h:50}
+	this.credit = {x:377,y:417,w:155,h:50}
+	this.draw = function()
+	{
+	drawImage(this.img ,0,0,canvas.width,canvas.height)
+	}
+		this.update = function ()
+		{
+		//Butão Jogar
+			if(button(this.jogar.x,this.jogar.y,this.jogar.w,this.jogar.h))
+			{
+			if(mouse.press)
+			{
+				scene = "battleMenu";
+				mouse.press = false;
+			}
+			}
+			//Butão Tutorial
+			if(button(this.tutorial.x,this.tutorial.y,this.tutorial.w,this.tutorial.h))
+			{
+				if(mouse.press)
+				{
+					scene = "tutorial";
+					mouse.press = false;
+				}
+			}
+			//Butão Creditos
+			if(button(this.credit.x,this.credit.y,this.credit.w,this.credit.h))
+			{
+				if(mouse.press)
+				{
+					scene = "creditos";
+					mouse.press = false;
+				}
+			}
+		}
+	
+	}
+//Menu de Batalha
+var random ;
+var random2 ;
+	
+//-------------------------------------------------------------------------------------
+function Fim()
+{
+this.draw = function()
+{
+		if(battleMenus.wall.life < 1)
+		{
+			drawImage(telaperdeu,-5,0,canvas.width+30,canvas.height);
+		}
+		else if (battleMenus.wall2.life < 1)
+		{
+			drawImage(telaganhou,-5,0,canvas.width+30,canvas.height);
+		}
+		else
+		{
+			drawText("Empate",100,100,"black","Arial 100px");
+		}
+}
+	this.update = function(){
+
+		if(battleMenus.wall.life < 1 && button(370,435,220,25) && mouse.press && battleMenus.wall2.life < 1) 
+			{
+				mouse.press = false;
+				scene = "Menu"
+				battleMenus = new Game();
+				cash = 100;
+				difficulty = 1;
+				localStorage.setItem("d.f",difficulty);
+				location.reload();
+			}
+		if(battleMenus.wall2.life < 1 && button(370,435,220,25) && mouse.press && battleMenus.wall2.life < 1) 
+			{
+				mouse.press = false;
+				battleMenus = new Game();
+				scene = "battleMenu";
+				cash += 100;
+				difficulty -= 0.2;
+				parseFloat(localStorage.setItem("d.f",difficulty));
+			}
+		if(collision(370,400,220,25) && mouse.press && battleMenus.wall.life < 1)
+			{
+				location.reload();
+			}
+	}
+}
+//------------------------------------------------------------
+
+function Credit()
+{
+	this.x = 0;
+	this.y = 0;
+	this.w = canvas.width;
+	this.h = canvas.height;
+	this.img = new Image();
+	this.img.src = "Imagens/cr.jpg"
+	this.update=function()
+	{
+		if(collision(this.x,this.y,this.w,this.h) && mouse.press)
+		{
+			scene = "Menu";
+			mouse.press = false;
+		}
+	}
+	this.draw=function()
+	{
+		drawImage(this.img,0,0,canvas.width,canvas.height);
+	}
+}
+
+var credito = new Credit();
+
+function Int()
+{
+	this.x = 0;
+	this.y = 0;
+	this.w = canvas.width;
+	this.h = canvas.height;
+	this.img = new Image();
+	this.img.src = "Imagens/tut.png"
+	this.update=function()
+	{
+		if(collision(this.x,this.y,this.w,this.h) && mouse.press)
+		{
+			scene = "Menu";
+			mouse.press = false;
+		}
+	}
+	this.draw=function()
+	{
+		drawImage(this.img,0,0,canvas.width + 10,canvas.height);
+		
+	}
+}
+var Tut = new Int();
+//------------------------------------------------------------
+	function draw()
+	{
+		switch(scene)
+		{
+			case "Menu":
+			menus.draw();
+			break;
+			case "fim":
+			end.draw();
+			break;
+			
+			case "pause":
+			pause.draw();
+			break;
+			
+			case "Options":
+			pauseOptions.draw();
+			break;
+			case "creditos":
+			credito.draw();
+			break;
+			case "tutorial":
+			Tut.draw();
+			break;
+			case "battleMenu":
+			battleMenus.draw();
+			break;
+			default:
+			console.log(scene);
+			break;
+		}
+	}
+	function update()
+	{
+		switch (scene)
+		{
+			case "Menu":
+			menus.update();
+			break;
+			
+			case "fim":
+			end.update();
+			break;
+			
+			case "creditos":
+			credito.update();
+			break;
+			
+			case "tutorial":
+			Tut.update();
+			break;
+			
+			case "Options":
+			pauseOptions.update();
+			break;
+			
+			case "pause":
+			pause.update();
+			break;
+			
+			case "battleMenu":
+			battleMenus.update();
+			battleMenus.update_move();
+			battleMenus.update_arrow();
+			battleMenus.update_collision();
+			break;
+		}
+	}
+	
+	function loop()
+	{
+		if(document.hasFocus())
+		{			
+			musicadespojada.play();	
+			update();
+			draw();
+		}
+		
+		
+		setTimeout(loop,25)
+	}
+	loop();
+		
+	document.addEventListener("keydown", kd, false);
+	document.addEventListener("mousemove", _mouseMove, false);
+	document.addEventListener("mouseup",   _mouseUp,   false);
+	document.addEventListener("mousedown", _mouseDown, false);
+ 
+</script>
+</body>
+</html>
